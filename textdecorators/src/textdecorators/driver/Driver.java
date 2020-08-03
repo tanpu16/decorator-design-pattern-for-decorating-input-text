@@ -4,6 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.InvalidPathException;
 
+import textdecorators.util.InputDetails;
+
 
 
 /**
@@ -42,8 +44,16 @@ public class Driver {
 		System.out.println("Hello World! Lets get started with the assignment");
 		
 		
+		InputDetails inputD = new InputDetails(args[0], args[1], args[2], args[4]);
 		
-
+		inputD.parseInput();
+		
+		/*
+		System.out.println("in driver "+inputD.getWordsList());
+		System.out.println("in driver "+inputD.getKeywordsList());
+		System.out.println("in driver "+inputD.getMisspelledList());
+		*/
+		
 		/*
 		try 
 		{
