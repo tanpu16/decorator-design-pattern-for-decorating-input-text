@@ -4,6 +4,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.InvalidPathException;
 
+import textdecorators.AbstractTextDecorator;
+import textdecorators.MostFrequentWordDecorator;
+import textdecorators.SentenceDecorator;
 import textdecorators.util.InputDetails;
 
 
@@ -47,6 +50,10 @@ public class Driver {
 		InputDetails inputD = new InputDetails(args[0], args[1], args[2], args[4]);
 		
 		inputD.parseInput();
+		
+		AbstractTextDecorator mst = new MostFrequentWordDecorator(null, inputD);
+		
+		mst.processInputDetails();
 		
 		/*
 		System.out.println("in driver "+inputD.getWordsList());

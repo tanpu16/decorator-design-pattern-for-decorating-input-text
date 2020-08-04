@@ -14,6 +14,7 @@ public class InputDetails implements FileDisplayInterface{
 	boolean isValid = false;
 	
 	private List<String> wordsList = new ArrayList<String>();
+	private List<String> outputList = new ArrayList<String>();
 	private List<String> misspelledList = new ArrayList<String>();
 	private List<String> keywordsList = new ArrayList<String>();
 	
@@ -49,15 +50,15 @@ public class InputDetails implements FileDisplayInterface{
 					}
 					else if(str.matches("^[a-zA-Z0-9]+[,]$"))
 					{
-							String dummy = str.replace(",","");
-							wordsList.add(dummy);
-							wordsList.add(",");
+							//String dummy = str.replace(",","");
+							//wordsList.add(dummy);
+							wordsList.add(str);
 					}
 					else if(str.matches("^[a-zA-Z0-9]+[.]$"))
                 	{
-                        	String dummy = str.replace(".","");
-                        	wordsList.add(dummy);
-                        	wordsList.add(".");
+                        	//String dummy = str.replace(".","");
+                        	//wordsList.add(dummy);
+                        	wordsList.add(str);
                 	}
 					else if(str.matches("^.*[.]$") || str.matches("^.*[,]$"))
                 	{
@@ -73,6 +74,8 @@ public class InputDetails implements FileDisplayInterface{
 					keyword = fpKeywordFile.poll();
 					
 				}
+				
+				outputList.addAll(wordsList);
 			
 			
 		} catch (IOException e) {
@@ -117,5 +120,13 @@ public class InputDetails implements FileDisplayInterface{
 
 	public void setKeywordsList(List<String> keywordsListIn) {
 			keywordsList = keywordsListIn;
+	}
+
+	public List<String> getOutputList() {
+		return outputList;
+	}
+
+	public void setOutputList(List<String> outputListIn) {
+			outputList = outputListIn;
 	}
 }

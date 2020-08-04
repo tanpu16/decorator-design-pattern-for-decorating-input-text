@@ -16,6 +16,19 @@ public class SentenceDecorator extends AbstractTextDecorator{
 	public void processInputDetails() {
 		// Decorate input details.
 		
+		for(int i = 0; i < id.getWordsList().size() ; i++)
+		{
+			if(0 == i)
+			{
+				String str = PrefixSuffix.BEGIN_SENTENCE__.toString()+id.getWordsList().get(i);
+				System.out.println(str);
+			}
+			if(id.getWordsList().get(i).toString().equals("."))
+			{
+				
+			}
+		}
+		
 		// Forward to the next decorator, if any.
 		if (null != atd) {
 			atd.processInputDetails();
