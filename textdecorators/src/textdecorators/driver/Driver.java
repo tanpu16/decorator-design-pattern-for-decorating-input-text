@@ -5,8 +5,10 @@ import java.io.IOException;
 import java.nio.file.InvalidPathException;
 
 import textdecorators.AbstractTextDecorator;
+import textdecorators.KeywordDecorator;
 import textdecorators.MostFrequentWordDecorator;
 import textdecorators.SentenceDecorator;
+import textdecorators.SpellCheckDecorator;
 import textdecorators.util.InputDetails;
 
 
@@ -51,9 +53,14 @@ public class Driver {
 		
 		inputD.parseInput();
 		
-		AbstractTextDecorator mst = new MostFrequentWordDecorator(null, inputD);
+		AbstractTextDecorator sentenceDecorator = new SentenceDecorator(null, inputD);
+		AbstractTextDecorator spellCheckDecorator = new SpellCheckDecorator(sentenceDecorator, inputD);
+		AbstractTextDecorator keywordDecorator = new KeywordDecorator(spellCheckDecorator, inputD);
+		AbstractTextDecorator mostFreqWordDecorator = new MostFrequentWordDecorator(keywordDecorator, inputD);
 		
-		mst.processInputDetails();
+		
+		
+		mostFreqWordDecorator.processInputDetails();
 		
 		/*
 		System.out.println("in driver "+inputD.getWordsList());

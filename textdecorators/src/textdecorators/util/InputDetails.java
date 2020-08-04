@@ -18,7 +18,7 @@ public class InputDetails implements FileDisplayInterface{
 	private List<String> misspelledList = new ArrayList<String>();
 	private List<String> keywordsList = new ArrayList<String>();
 	
-	public InputDetails(String inputFile, String misspelledFile, String keywordFile,String outputFile)
+	public InputDetails(String inputFile, String keywordFile,String misspelledFile,String outputFile)
 	{
 		try {
 			fpInput = new FileProcessor(inputFile);
@@ -48,18 +48,6 @@ public class InputDetails implements FileDisplayInterface{
 						keywordsList.add(keyword);
 						
 					}
-					else if(str.matches("^[a-zA-Z0-9]+[,]$"))
-					{
-							//String dummy = str.replace(",","");
-							//wordsList.add(dummy);
-							wordsList.add(str);
-					}
-					else if(str.matches("^[a-zA-Z0-9]+[.]$"))
-                	{
-                        	//String dummy = str.replace(".","");
-                        	//wordsList.add(dummy);
-                        	wordsList.add(str);
-                	}
 					else if(str.matches("^.*[.]$") || str.matches("^.*[,]$"))
                 	{
 							wordsList.add(str);
@@ -76,7 +64,7 @@ public class InputDetails implements FileDisplayInterface{
 				}
 				
 				outputList.addAll(wordsList);
-			
+
 			
 		} catch (IOException e) {
 				// TODO Auto-generated catch block
