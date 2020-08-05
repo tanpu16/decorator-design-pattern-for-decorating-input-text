@@ -1,6 +1,7 @@
 package textdecorators;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -34,7 +35,7 @@ public class MostFrequentWordDecorator extends AbstractTextDecorator{
 		}
 		
 		Map<String, Long> counts =
-				wordsListDummy.stream().collect(Collectors.groupingBy(e -> e.toString().toLowerCase(), Collectors.counting()));
+				wordsListDummy.stream().collect(Collectors.groupingBy(list -> list.toString().toLowerCase(), Collectors.counting()));
 		
 		Map.Entry<String, Long> freqEntry = null;
 
@@ -46,13 +47,26 @@ public class MostFrequentWordDecorator extends AbstractTextDecorator{
 		    }
 		}
 		
+		
 		for(int i = 0; i < id.getOutputList().size(); i++)
 		{
-			String str = id.getOutputList().get(i).toLowerCase();
-			if(str.equals(freqEntry.getKey()))
+			String str = id.getOutputList().get(i);
+			List<String> temp = new ArrayList<String>();
+			temp.addAll(Arrays.asList(str.split("\\s")));
+			
+			
+			for(int j=0; j<temp.size(); j++)
 			{
-				id.getOutputList().set(i, PrefixSuffix.MOST_FREQUENT_+id.getOutputList().get(i)+PrefixSuffix._MOST_FREQUENT);
+				if(temp.get(j).toLowerCase().equals(freqEntry.getKey()))
+				{
+					temp.set(j, PrefixSuffix.MOST_FREQUENT_+temp.get(j)+PrefixSuffix._MOST_FREQUENT);
+				}
+				
 			}
+			
+			String final_output = String.join(" ", temp);
+			id.getOutputList().remove(i);
+			id.getOutputList().add(i, final_output);	
 		}
 		
 		//System.out.println("in most freq "+id.getOutputList());

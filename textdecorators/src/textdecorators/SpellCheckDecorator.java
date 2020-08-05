@@ -1,5 +1,9 @@
 package textdecorators;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import textdecorators.util.InputDetails;
 
 public class SpellCheckDecorator extends AbstractTextDecorator{
@@ -18,33 +22,46 @@ public class SpellCheckDecorator extends AbstractTextDecorator{
 	@Override
 	public void processInputDetails() {
 		// Decorate input details.
-		
-		for(int i=0; i < id.getWordsList().size() ; i++)
+		for(int i = 0; i < id.getOutputList().size(); i++)
 		{
-			for(int j=0; j < id.getKeywordsList().size() ; j++)
+			String str = id.getOutputList().get(i);
+			List<String> temp = new ArrayList<String>();
+			temp.addAll(Arrays.asList(str.split("\\s")));
+			
+			
+			for(int j=0; j<temp.size(); j++)
 			{
-				if(id.getWordsList().get(i) !="" && id.getWordsList().get(i).toLowerCase().equals(id.getMisspelledList().get(j)))
+				for(int k=0 ; k<id.getMisspelledList().size(); k++)
 				{
-					id.getOutputList().set(i, PrefixSuffix.SPELLCHECK_+id.getOutputList().get(i)+PrefixSuffix._SPELLCHECK);
-				}
-				else if(id.getWordsList().get(i) !="" && id.getWordsList().get(i).contains("."))
-				{
-						String dummy = id.getWordsList().get(i).replace(".","");
-						if(dummy.toLowerCase().equals(id.getMisspelledList().get(j)))
-						{
-							id.getOutputList().set(i, PrefixSuffix.SPELLCHECK_+dummy+PrefixSuffix._SPELLCHECK+".");
-						}
-				}
-				else if(id.getWordsList().get(i) !="" && id.getWordsList().get(i).contains(","))
-				{
-						String dummy = id.getWordsList().get(i).replace(",","");
-						if(dummy.toLowerCase().equals(id.getMisspelledList().get(j)))
-						{
-							id.getOutputList().set(i, PrefixSuffix.SPELLCHECK_+dummy+PrefixSuffix._SPELLCHECK+",");
-						}
+					if(temp.get(j) !="" && temp.get(j).toLowerCase().equals(id.getMisspelledList().get(k)))
+					{
+						//id.getOutputList().set(i, PrefixSuffix.KEYWORD_+id.getOutputList().get(i)+PrefixSuffix._KEYWORD);
+						temp.set(j, PrefixSuffix.SPELLCHECK_+temp.get(j)+PrefixSuffix._SPELLCHECK);
+					}
+					else if(temp.get(j) !="" && temp.get(j).contains("."))
+					{
+							String dummy = temp.get(j).replace(".","");
+							if(dummy.toLowerCase().equals(id.getMisspelledList().get(k)))
+							{
+								temp.set(j, PrefixSuffix.SPELLCHECK_+dummy+PrefixSuffix._SPELLCHECK+".");
+							}
+					}
+					else if(temp.get(j) !="" && temp.get(j).contains(","))
+					{
+							String dummy = temp.get(j).replace(",","");
+							if(dummy.toLowerCase().equals(id.getMisspelledList().get(k)))
+							{
+								temp.set(j, PrefixSuffix.SPELLCHECK_+dummy+PrefixSuffix._SPELLCHECK+",");
+							}
+					}
+					
 				}
 			}
-		}  
+			
+			String final_output = String.join(" ", temp);
+			id.getOutputList().remove(i);
+			id.getOutputList().add(i, final_output);	
+		}
 		
 		//System.out.println("in spell check "+id.getOutputList());
 		

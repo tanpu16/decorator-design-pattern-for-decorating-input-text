@@ -58,8 +58,6 @@ public class Driver {
 		AbstractTextDecorator keywordDecorator = new KeywordDecorator(spellCheckDecorator, inputD);
 		AbstractTextDecorator mostFreqWordDecorator = new MostFrequentWordDecorator(keywordDecorator, inputD);
 		
-		
-		
 		mostFreqWordDecorator.processInputDetails();
 		
 		/*

@@ -3,6 +3,7 @@ package textdecorators.util;
 import java.io.IOException;
 import java.nio.file.InvalidPathException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -41,20 +42,16 @@ public class InputDetails implements FileDisplayInterface{
 				
 				while(null != str)
 				{
-					if(str.matches("[a-zA-Z0-9]+$"))
+					if(str.matches("[a-zA-Z0-9\s]+$") || str.contains(".") || str.contains(","))
 					{
-						wordsList.add(str);
+						outputList.add(str);
 						misspelledList.add(misspell);
 						keywordsList.add(keyword);
 						
 					}
-					else if(str.matches("^.*[.]$") || str.matches("^.*[,]$"))
-                	{
-							wordsList.add(str);
-                	}
-					else if(str.matches(""))
+					else if(str.matches(".") || str.matches(","))
 					{
-							wordsList.add("");
+						outputList.add(str);
 					}
 					else
 					{
@@ -67,7 +64,18 @@ public class InputDetails implements FileDisplayInterface{
 					
 				}
 				
-				outputList.addAll(wordsList);
+				//outputList.addAll(wordsList);
+				
+				//List<String> newList = new ArrayList<String>();
+				
+				for(int i=0; i<outputList.size(); i++)
+				{
+					String next = outputList.get(i);
+					wordsList.addAll(Arrays.asList(next.split("\\s")));
+					
+				}
+				
+				//System.out.println(" "+wordsList);
 
 			
 		} catch (IOException e) {
