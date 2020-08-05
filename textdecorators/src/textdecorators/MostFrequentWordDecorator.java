@@ -1,5 +1,7 @@
 package textdecorators;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -21,8 +23,18 @@ public class MostFrequentWordDecorator extends AbstractTextDecorator{
 	public void processInputDetails() {
 		// Decorate input details.
 		
+		List<String> wordsListDummy = new ArrayList<String>();
+		
+		for(int i = 0; i < id.getWordsList().size(); i++)
+		{
+			if(id.getWordsList().get(i) != "")
+			{
+				wordsListDummy.add(id.getWordsList().get(i));
+			}
+		}
+		
 		Map<String, Long> counts =
-			    id.getWordsList().stream().collect(Collectors.groupingBy(e -> e.toString().toLowerCase(), Collectors.counting()));
+				wordsListDummy.stream().collect(Collectors.groupingBy(e -> e.toString().toLowerCase(), Collectors.counting()));
 		
 		Map.Entry<String, Long> freqEntry = null;
 

@@ -60,7 +60,7 @@ public final class FileProcessor {
 		if (0 == words.size()) {
 			String nextLine = reader.readLine();
 			if (null == nextLine) return null;
-			words.addAll(Arrays.asList(nextLine.split("\\s+")));
+			words.addAll(Arrays.asList(nextLine.split("\\s")));
 		}
 		return words.remove();
 	}

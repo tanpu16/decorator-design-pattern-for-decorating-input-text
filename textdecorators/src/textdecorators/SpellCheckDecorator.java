@@ -23,11 +23,11 @@ public class SpellCheckDecorator extends AbstractTextDecorator{
 		{
 			for(int j=0; j < id.getKeywordsList().size() ; j++)
 			{
-				if(id.getWordsList().get(i).toLowerCase().equals(id.getMisspelledList().get(j)))
+				if(id.getWordsList().get(i) !="" && id.getWordsList().get(i).toLowerCase().equals(id.getMisspelledList().get(j)))
 				{
 					id.getOutputList().set(i, PrefixSuffix.SPELLCHECK_+id.getOutputList().get(i)+PrefixSuffix._SPELLCHECK);
 				}
-				else if(id.getWordsList().get(i).contains("."))
+				else if(id.getWordsList().get(i) !="" && id.getWordsList().get(i).contains("."))
 				{
 						String dummy = id.getWordsList().get(i).replace(".","");
 						if(dummy.toLowerCase().equals(id.getMisspelledList().get(j)))
@@ -35,7 +35,7 @@ public class SpellCheckDecorator extends AbstractTextDecorator{
 							id.getOutputList().set(i, PrefixSuffix.SPELLCHECK_+dummy+PrefixSuffix._SPELLCHECK+".");
 						}
 				}
-				else if(id.getWordsList().get(i).contains(","))
+				else if(id.getWordsList().get(i) !="" && id.getWordsList().get(i).contains(","))
 				{
 						String dummy = id.getWordsList().get(i).replace(",","");
 						if(dummy.toLowerCase().equals(id.getMisspelledList().get(j)))

@@ -25,11 +25,11 @@ public class KeywordDecorator extends AbstractTextDecorator{
 		{
 			for(int j=0; j < id.getKeywordsList().size() ; j++)
 			{
-				if(id.getWordsList().get(i).toLowerCase().equals(id.getKeywordsList().get(j)))
+				if(id.getWordsList().get(i) !="" && id.getWordsList().get(i).toLowerCase().equals(id.getKeywordsList().get(j)))
 				{
 					id.getOutputList().set(i, PrefixSuffix.KEYWORD_+id.getOutputList().get(i)+PrefixSuffix._KEYWORD);
 				}
-				else if(id.getWordsList().get(i).contains("."))
+				else if(id.getWordsList().get(i) !="" && id.getWordsList().get(i).contains("."))
 				{
 						String dummy = id.getWordsList().get(i).replace(".","");
 						if(dummy.toLowerCase().equals(id.getKeywordsList().get(j)))
@@ -37,7 +37,7 @@ public class KeywordDecorator extends AbstractTextDecorator{
 							id.getOutputList().set(i, PrefixSuffix.KEYWORD_+dummy+PrefixSuffix._KEYWORD+".");
 						}
 				}
-				else if(id.getWordsList().get(i).contains(","))
+				else if(id.getWordsList().get(i) !="" && id.getWordsList().get(i).contains(","))
 				{
 						String dummy = id.getWordsList().get(i).replace(",","");
 						if(dummy.toLowerCase().equals(id.getKeywordsList().get(j)))

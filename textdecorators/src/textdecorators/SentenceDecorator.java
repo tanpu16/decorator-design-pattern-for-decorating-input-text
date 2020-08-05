@@ -18,11 +18,11 @@ public class SentenceDecorator extends AbstractTextDecorator{
 		
 		for(int i=0; i < id.getWordsList().size() ; i++)
 		{
-			if(0 == i)
+			if(0 == i && id.getWordsList().get(i) !="")
 			{
 				id.getOutputList().set(i, PrefixSuffix.BEGIN_SENTENCE__+id.getOutputList().get(i));
 			}
-			if(id.getWordsList().get(i).contains("."))
+			if(id.getWordsList().get(i) !="" && id.getWordsList().get(i).contains("."))
 			{
 				String dummy = id.getOutputList().get(i).replace(".","");
 				id.getOutputList().set(i, dummy+PrefixSuffix.__END_SENTENCE+".");
@@ -40,6 +40,5 @@ public class SentenceDecorator extends AbstractTextDecorator{
 			atd.processInputDetails();
 		}
 	}
-
 
 }

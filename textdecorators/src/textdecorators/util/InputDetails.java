@@ -52,6 +52,10 @@ public class InputDetails implements FileDisplayInterface{
                 	{
 							wordsList.add(str);
                 	}
+					else if(str.matches(""))
+					{
+							wordsList.add("");
+					}
 					else
 					{
 						isValid = true;
