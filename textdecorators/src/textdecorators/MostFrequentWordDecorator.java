@@ -1,12 +1,16 @@
 package textdecorators;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import textdecorators.util.FileDisplayInterface;
 import textdecorators.util.InputDetails;
+import textdecorators.util.SingletonMyLogger;
+import textdecorators.util.SingletonMyLogger.DebugLevel;
 
 public class MostFrequentWordDecorator extends AbstractTextDecorator{
 	private AbstractTextDecorator atd;
@@ -15,27 +19,36 @@ public class MostFrequentWordDecorator extends AbstractTextDecorator{
 	public MostFrequentWordDecorator(AbstractTextDecorator atdIn, InputDetails idIn) {
 			atd = atdIn;
 			id = idIn;
+			SingletonMyLogger.getInstance().writeMessage("MostFrequentWordDecorator Constructor called", DebugLevel.CONSTRUCTOR);
 	}
 
-	/**
-	 *
-	 */
+	//toString method
+	@Override
+	public String toString()
+	{
+		return "Class PopulateMyArrayVisitor [AbstractTextDecorator is -> "+atd+"InputDetails is"+id+"]";
+	}
+	
+	/*this is void method, which process the input and add MostFrequentWord
+	 decorator to the word which occur maximum time in input file
+	@param NA 
+	@return NA
+	@see print nothing, but add MostFrequentWord decorator to the words
+	*/
 	@Override
 	public void processInputDetails() {
 		// Decorate input details.
 		
-		List<String> wordsListDummy = new ArrayList<String>();
+		List<String> wordsList = new ArrayList<String>();
 		
-		for(int i = 0; i < id.getWordsList().size(); i++)
+		for(int i=0; i<id.getOutputList().size(); i++)
 		{
-			if(id.getWordsList().get(i) != "")
-			{
-				wordsListDummy.add(id.getWordsList().get(i));
-			}
+			String next = id.getOutputList().get(i);
+			wordsList.addAll(Arrays.asList(next.split("\\s")));					
 		}
 		
 		Map<String, Long> counts =
-				wordsListDummy.stream().collect(Collectors.groupingBy(list -> list.toString().toLowerCase(), Collectors.counting()));
+				wordsList.stream().collect(Collectors.groupingBy(list -> list.toString().toLowerCase(), Collectors.counting()));
 		
 		Map.Entry<String, Long> freqEntry = null;
 
@@ -61,6 +74,22 @@ public class MostFrequentWordDecorator extends AbstractTextDecorator{
 				{
 					temp.set(j, PrefixSuffix.MOST_FREQUENT_+temp.get(j)+PrefixSuffix._MOST_FREQUENT);
 				}
+				if(temp.get(j).contains("."))
+				{
+					String dummy = temp.get(j).replace(".","");
+					if(dummy.toLowerCase().equals(freqEntry.getKey()))
+					{
+						temp.set(j, PrefixSuffix.MOST_FREQUENT_+dummy+PrefixSuffix._MOST_FREQUENT+".");
+					}
+				}
+				if(temp.get(j).contains(","))
+				{
+					String dummy = temp.get(j).replace(",","");
+					if(dummy.toLowerCase().equals(freqEntry.getKey()))
+					{
+						temp.set(j, PrefixSuffix.MOST_FREQUENT_+dummy+PrefixSuffix._MOST_FREQUENT+",");
+					}
+				}
 				
 			}
 			
@@ -69,7 +98,15 @@ public class MostFrequentWordDecorator extends AbstractTextDecorator{
 			id.getOutputList().add(i, final_output);	
 		}
 		
-		//System.out.println("in most freq "+id.getOutputList());
+		if(SingletonMyLogger.DebugLevel.MOSTFREQUENTWORDDECORATOR == SingletonMyLogger.getInstance().getDebugValue())
+		{
+			try {
+				((FileDisplayInterface) id).writeToFile("MOSTFREQUENTWORDDECORATOR");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
 		if (null != atd) {
 			atd.processInputDetails();

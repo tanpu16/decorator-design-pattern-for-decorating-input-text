@@ -22,8 +22,7 @@ public class SingletonMyLogger {
 			return uniqueInstance;
 		}
 
-	    public enum DebugLevel { CONSTRUCTOR, FILE_PROCESSOR, VISITOR, CLONE, RESULT, ACCEPT, NONE
-	                                   };
+	    public enum DebugLevel { MOSTFREQUENTWORDDECORATOR, KEYWORDDECORATOR, SPELLCHECKDECORATOR, SENTENCEDECORATOR, CONSTRUCTOR,FILEWRITER,FILEPROCESSORPOLL, PARSER, NONE };
 
 	    private DebugLevel debugLevel;
 
@@ -36,17 +35,17 @@ public class SingletonMyLogger {
 		*/
 	    public void setDebugValue (int levelIn) {
 		switch (levelIn) {
-			case 6: debugLevel = DebugLevel.ACCEPT; break;
- 			case 5: debugLevel = DebugLevel.RESULT; break;
-			case 4: debugLevel = DebugLevel.CLONE; break;
-			case 3: debugLevel = DebugLevel.VISITOR; break;
-			case 2: debugLevel = DebugLevel.CONSTRUCTOR; break;
-			case 1: debugLevel = DebugLevel.FILE_PROCESSOR; break;
+			case 8: debugLevel = DebugLevel.PARSER; break;
+			case 7: debugLevel = DebugLevel.FILEPROCESSORPOLL; break;
+			case 6: debugLevel = DebugLevel.FILEWRITER; break;
+			case 5: debugLevel = DebugLevel.CONSTRUCTOR; break;
+			case 4: debugLevel = DebugLevel.SENTENCEDECORATOR; break;
+			case 3: debugLevel = DebugLevel.SPELLCHECKDECORATOR; break;
+			case 2: debugLevel = DebugLevel.KEYWORDDECORATOR; break;
+			case 1: debugLevel = DebugLevel.MOSTFREQUENTWORDDECORATOR; break;
 			default: debugLevel = DebugLevel.NONE; break;
 		}
 	    }
-	    
-	    
 	    
 	    /*this method is used to set the debugLevel from enum listed
 		@param enum DebugLevel
@@ -54,9 +53,19 @@ public class SingletonMyLogger {
 		@see just set the Debug level
 		*/
 	    public void setDebugValue (DebugLevel levelIn) {
-		debugLevel = levelIn;
+	    	debugLevel = levelIn;
 	    }
 
+	    /*this method is used to get the debugLevel
+		@param NA
+		@return DebugLevel
+		@see just get the Debug level
+		*/
+	    public DebugLevel getDebugValue()
+	    {
+	    	return debugLevel;
+	    }
+	    
 	    /*this method is used to write a message to stdout according to the DebugLevel set
 		@param String message written
 		@param DebugLevel set

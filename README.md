@@ -27,7 +27,7 @@ The above command compiles your code and generates .class files inside the BUILD
 ## Instructions to run:
 
 ```commandline
-ant -buildfile textdecorators/src/build.xml run -Dinput1="input1.txt" -Dinput2="input2.txt" -Dcommonintsout="output1.txt" -Dmissingintsout1="output2.txt" -Dmissingintsout2="output3.txt" -Ddebug="2"
+ant -buildfile textdecorators/src/build.xml run -Dinput="input.txt" -Dmisspelled="misspell.txt" -Dkeywords="keywords.txt" -Doutput="output.txt" -Dlog="log.txt" -Ddebug="2"
 ```
 Note: Arguments accept the absolute path of the files
 
@@ -43,4 +43,6 @@ I am involved in plagiarism or cheating an official form will be
 submitted to the Academic Honesty Committee of the Watson School to
 determine the action that needs to be taken. "
 
-Date: 
+Date: 6 Aug 2020
+
+I am using one slack day for this Assignment 5.

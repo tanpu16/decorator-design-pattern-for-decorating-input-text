@@ -8,6 +8,9 @@ import java.io.FileNotFoundException;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
+import textdecorators.util.SingletonMyLogger.DebugLevel;
+
 import java.nio.file.InvalidPathException;
 
 /**
@@ -36,6 +39,8 @@ public final class FileProcessor {
 		}
 
 		reader = new BufferedReader(new FileReader(new File(inputFilePath)));
+		
+		SingletonMyLogger.getInstance().writeMessage("FileProcessor Constructor called", DebugLevel.CONSTRUCTOR);
 	}
 
 	/**
@@ -45,6 +50,7 @@ public final class FileProcessor {
 	* @exception IOException On error encountered when reading from input file.
 	*/
 	public String poll() throws IOException {
+		SingletonMyLogger.getInstance().writeMessage("FileProcessor poll method called", DebugLevel.FILEPROCESSORPOLL);
 		return reader.readLine();
 	}
 

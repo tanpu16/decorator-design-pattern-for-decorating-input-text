@@ -1,101 +1,117 @@
 package textdecorators;
 
-
-
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import textdecorators.util.FileDisplayInterface;
 import textdecorators.util.InputDetails;
+import textdecorators.util.SingletonMyLogger;
+import textdecorators.util.SingletonMyLogger.DebugLevel;
 
 public class KeywordDecorator extends AbstractTextDecorator{
 
 	private AbstractTextDecorator atd;
 	private InputDetails id;
 
+	//constructor
 	public KeywordDecorator(AbstractTextDecorator atdIn, InputDetails idIn) {
 			atd = atdIn;
 			id = idIn;
+			SingletonMyLogger.getInstance().writeMessage("KeywordDecorator Constructor called", DebugLevel.CONSTRUCTOR);		
+	}
+	
+	//toString method
+	@Override
+	public String toString()
+	{
+		return "Class PopulateMyArrayVisitor [AbstractTextDecorator is -> "+atd+"InputDetails is"+id+"]";
 	}
 
-	/**
-	 *
-	 */
+	/*this is void method, which process the input and add keyword
+	 decorator to the words which are present in keywords file.
+	@param NA 
+	@return NA
+	@see print nothing, but add keyword decorator to the words
+	*/
 	@Override
 	public void processInputDetails() {
+			
 		// Decorate input details.
-		
-		/*
-		for(int i=0; i < id.getWordsList().size() ; i++)
-		{
-			for(int j=0; j < id.getKeywordsList().size() ; j++)
+			for(int i = 0; i < id.getOutputList().size(); i++)
 			{
-				if(id.getWordsList().get(i) !="" && id.getWordsList().get(i).toLowerCase().equals(id.getKeywordsList().get(j)))
+				String str = id.getOutputList().get(i);
+				List<String> temp = new ArrayList<String>();
+				temp.addAll(Arrays.asList(str.split("\\s")));
+				
+				
+				for(int j=0; j<temp.size(); j++)
 				{
-					id.getOutputList().set(i, PrefixSuffix.KEYWORD_+id.getOutputList().get(i)+PrefixSuffix._KEYWORD);
-				}
-				else if(id.getWordsList().get(i) !="" && id.getWordsList().get(i).contains("."))
-				{
-						String dummy = id.getWordsList().get(i).replace(".","");
-						if(dummy.toLowerCase().equals(id.getKeywordsList().get(j)))
+					for(int k=0 ; k<id.getKeywordsList().size(); k++)
+					{
+						if(temp.get(j) !="" && temp.get(j).toLowerCase().equals(id.getKeywordsList().get(k)))
 						{
-							id.getOutputList().set(i, PrefixSuffix.KEYWORD_+dummy+PrefixSuffix._KEYWORD+".");
+							temp.set(j, PrefixSuffix.KEYWORD_+temp.get(j)+PrefixSuffix._KEYWORD);
 						}
-				}
-				else if(id.getWordsList().get(i) !="" && id.getWordsList().get(i).contains(","))
-				{
-						String dummy = id.getWordsList().get(i).replace(",","");
-						if(dummy.toLowerCase().equals(id.getKeywordsList().get(j)))
+						else if(temp.get(j) !="" && temp.get(j).matches("[a-zA-Z0-9]+[.]"))
 						{
-							id.getOutputList().set(i, PrefixSuffix.KEYWORD_+dummy+PrefixSuffix._KEYWORD+",");
+								String dummy = temp.get(j).replace(".","");
+								if(dummy.toLowerCase().equals(id.getKeywordsList().get(k)))
+								{
+									temp.set(j, PrefixSuffix.KEYWORD_+dummy+PrefixSuffix._KEYWORD+".");
+								}
 						}
+						else if(temp.get(j) !="" && temp.get(j).matches("[a-zA-Z0-9]+[,]"))
+						{
+								String dummy = temp.get(j).replace(",","");
+								if(dummy.toLowerCase().equals(id.getKeywordsList().get(k)))
+								{
+									temp.set(j, PrefixSuffix.KEYWORD_+dummy+PrefixSuffix._KEYWORD+",");
+								}
+						}
+						else if(temp.get(j).contains("MOST_FREQUENT") && !temp.get(j).contains("KEYWORD"))
+						{
+							String dummy = temp.get(j).replaceAll("^MOST_FREQUENT_|_MOST_FREQUENT.*$","");
+						
+							if(temp.get(j).contains("."))
+							{
+								if(dummy.toLowerCase().equals(id.getKeywordsList().get(k)))
+								{
+									temp.set(j, PrefixSuffix.KEYWORD_+"MOST_FREQUENT_"+dummy+"_MOST_FREQUENT"+PrefixSuffix._KEYWORD+".");
+								}
+							}
+							else if(temp.get(j).contains(","))
+							{
+								if(dummy.toLowerCase().equals(id.getKeywordsList().get(k)))
+								{
+									temp.set(j, PrefixSuffix.KEYWORD_+"MOST_FREQUENT_"+dummy+"_MOST_FREQUENT"+PrefixSuffix._KEYWORD+",");
+								}
+							}
+							else if(dummy.toLowerCase().equals(id.getKeywordsList().get(k)))
+							{
+								temp.set(j, PrefixSuffix.KEYWORD_+"MOST_FREQUENT_"+dummy+"_MOST_FREQUENT"+PrefixSuffix._KEYWORD);
+							}
+							
+						}
+						
+					}
+				}
+				
+				String final_output = String.join(" ", temp);
+				id.getOutputList().remove(i);
+				id.getOutputList().add(i, final_output);	
+			}
+		
+			if(SingletonMyLogger.DebugLevel.KEYWORDDECORATOR == SingletonMyLogger.getInstance().getDebugValue())
+			{
+				try {
+					((FileDisplayInterface) id).writeToFile("KEYWORDDECORATOR");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
-		} 
-		*/
-		
-		for(int i = 0; i < id.getOutputList().size(); i++)
-		{
-			String str = id.getOutputList().get(i);
-			List<String> temp = new ArrayList<String>();
-			temp.addAll(Arrays.asList(str.split("\\s")));
-			
-			
-			for(int j=0; j<temp.size(); j++)
-			{
-				for(int k=0 ; k<id.getKeywordsList().size(); k++)
-				{
-					if(temp.get(j) !="" && temp.get(j).toLowerCase().equals(id.getKeywordsList().get(k)))
-					{
-						//id.getOutputList().set(i, PrefixSuffix.KEYWORD_+id.getOutputList().get(i)+PrefixSuffix._KEYWORD);
-						temp.set(j, PrefixSuffix.KEYWORD_+temp.get(j)+PrefixSuffix._KEYWORD);
-					}
-					else if(temp.get(j) !="" && temp.get(j).contains("."))
-					{
-							String dummy = temp.get(j).replace(".","");
-							if(dummy.toLowerCase().equals(id.getKeywordsList().get(k)))
-							{
-								temp.set(j, PrefixSuffix.KEYWORD_+dummy+PrefixSuffix._KEYWORD+".");
-							}
-					}
-					else if(temp.get(j) !="" && temp.get(j).contains(","))
-					{
-							String dummy = temp.get(j).replace(",","");
-							if(dummy.toLowerCase().equals(id.getKeywordsList().get(k)))
-							{
-								temp.set(j, PrefixSuffix.KEYWORD_+dummy+PrefixSuffix._KEYWORD+",");
-							}
-					}
-					
-				}
-			}
-			
-			String final_output = String.join(" ", temp);
-			id.getOutputList().remove(i);
-			id.getOutputList().add(i, final_output);	
-		}
-		
-		//System.out.println("in keyword "+id.getOutputList());
 		
 		if (null != atd) {
 			atd.processInputDetails();
