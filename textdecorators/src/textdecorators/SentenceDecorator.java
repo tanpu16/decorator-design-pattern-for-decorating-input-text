@@ -38,59 +38,43 @@ public class SentenceDecorator extends AbstractTextDecorator{
 	@Override
 	public void processInputDetails() {
 		// Decorate input details.
-
-		for(int i = 0; i < id.getOutputList().size(); i++)
-		{
-			String str = id.getOutputList().get(i);
-			List<String> temp = new ArrayList<String>();
-			temp.addAll(Arrays.asList(str.split("\\s")));
-			
-			for(int j=0; j<temp.size(); j++)
-			{
-				if(0 == i && 0 == j)
-				{
-					temp.set(j, PrefixSuffix.BEGIN_SENTENCE__+temp.get(j));
-				}
-				if(temp.get(j) !="" && temp.get(j).contains("."))
-				{
-					String dummy = temp.get(j).replace(".","");
-					
-					if((j+1) < temp.size())
-					{
-						temp.set(j, dummy+PrefixSuffix.__END_SENTENCE+"."+PrefixSuffix.BEGIN_SENTENCE__);
-					}
-					else
-					{
-						temp.set(j, dummy+PrefixSuffix.__END_SENTENCE+".");
-					}
-					
+		List<String> updatedList = new ArrayList<String>();
 				
-				}
-				else if(temp.get(j) !="" && temp.get(j).matches(".*[.].*$"))
+		for(int i=0; i< id.getOutputList().size(); i++)
+		{
+				String next = id.getOutputList().get(i);
+				updatedList.addAll(Arrays.asList(next.split("\\s")));	
+				updatedList.add("\n");
+		}	
+				
+	
+		for(int j=0; j<updatedList.size(); j++)
+		{
+			if(0 == j)
+			{
+				id.getWordList().set(j, PrefixSuffix.BEGIN_SENTENCE__+id.getWordList().get(j));
+			}
+			else if(updatedList.get(j) !="" && updatedList.get(j).contains("."))
+			{
+				String dummy = id.getWordList().get(j).replace(".","");
+				
+				if((j+1) < updatedList.size()-1 && !dummy.equals(""))
 				{
-					String dummy1 = temp.get(j).replaceAll("^|[a-zA-Z0-9]+.$","");
-					String dummy2 = temp.get(j).replaceAll("^[a-zA-Z0-9]+.|$","");
-					
-					String first = dummy1.replace(".", "")+PrefixSuffix.__END_SENTENCE+".";
-					String second = dummy2;
-					if(dummy2.contains("."))
-					{
-						second = dummy2.replace(".", "")+PrefixSuffix.__END_SENTENCE+".";
-					}
-					temp.set(j, first+PrefixSuffix.BEGIN_SENTENCE__+second);
+					id.getWordList().set(j, dummy+PrefixSuffix.__END_SENTENCE+"."+PrefixSuffix.BEGIN_SENTENCE__);
 				}
+				else
+				{
+					id.getWordList().set(j, dummy+PrefixSuffix.__END_SENTENCE+".");
+				}	
 				
 			}
-			String final_output = String.join(" ", temp);
-			id.getOutputList().remove(i);
-			id.getOutputList().add(i, final_output);	
-			
+
 		}
 		
 		if(SingletonMyLogger.DebugLevel.SENTENCEDECORATOR == SingletonMyLogger.getInstance().getDebugValue())
 		{
 			try {
-				((FileDisplayInterface) id).writeToFile("SENTENCEDECORATOR");
+				((FileDisplayInterface) id).writeToFile(PrefixSuffix.SENETENCEDECORATOR__,PrefixSuffix.__SENETENCEDECORATOR);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

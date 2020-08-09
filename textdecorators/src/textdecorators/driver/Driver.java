@@ -4,6 +4,7 @@ import java.io.IOException;
 import textdecorators.AbstractTextDecorator;
 import textdecorators.KeywordDecorator;
 import textdecorators.MostFrequentWordDecorator;
+import textdecorators.PrefixSuffix;
 import textdecorators.SentenceDecorator;
 import textdecorators.SpellCheckDecorator;
 import textdecorators.util.FileDisplayInterface;
@@ -30,8 +31,30 @@ public class Driver {
 			System.exit(0);
 		}
 		
-		System.out.println("Hello World! Lets get started with the assignment");
+		if(args[0].equals(args[1]) && args[0].equals(args[2]))
+		{
+			System.err.println("Input file and mispell file and Keywords file have the same path and name! Exiting!!!");
+			System.exit(0);
+		}
+		else if(args[0].equals(args[1]))
+		{
+			System.err.println("Input file and Keyword file have the same path and name! Exiting!!!");
+			System.exit(0);
+		}
+		else if(args[1].equals(args[2]))
+		{
+			System.err.println("Keyword file and mispell file have the same path and name! Exiting!!!");
+			System.exit(0);
+		}
+		else if(args[0].equals(args[2]))
+		{
+			System.err.println("Input file and mispell file have the same path and name! Exiting!!!");
+			System.exit(0);
+		}
 		
+		
+		System.out.println("Hello World! Lets get started with the assignment");
+				
 		
 		try {
 			
@@ -51,7 +74,7 @@ public class Driver {
 			mostFreqWordDecorator.processInputDetails();
 			
 			inputD.setFilePath(args[3]);
-			((FileDisplayInterface) inputD).writeToFile("");
+			((FileDisplayInterface) inputD).writeToFile(PrefixSuffix.NONE,PrefixSuffix.NONE);
 		
 		}
 		catch(IOException e)

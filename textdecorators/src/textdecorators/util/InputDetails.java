@@ -7,8 +7,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.InvalidPathException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import textdecorators.PrefixSuffix;
 import textdecorators.util.SingletonMyLogger.DebugLevel;
 
 public class InputDetails implements FileDisplayInterface {
@@ -18,6 +20,7 @@ public class InputDetails implements FileDisplayInterface {
 	boolean isInValid;
 	boolean isEmpty;
 	
+	private List<String> wordList = new ArrayList<String>();
 	private List<String> outputList = new ArrayList<String>();
 	private List<String> misspelledList = new ArrayList<String>();
 	private List<String> keywordsList = new ArrayList<String>();
@@ -114,6 +117,16 @@ public class InputDetails implements FileDisplayInterface {
 				}
 				
 				
+				for(int i=0; i< outputList.size(); i++)
+				{
+					String next = outputList.get(i);
+					wordList.addAll(Arrays.asList(next.split("\\s")));	
+					if(i < outputList.size()-1)
+					{
+						wordList.add("\n");
+					}
+				}
+				
 				while(null != misspell)
 				{
 					if(misspell.matches("[a-zA-Z0-9]+$"))
@@ -194,31 +207,39 @@ public class InputDetails implements FileDisplayInterface {
 		
 	}
 
-	/*this is void method, which write output to all output files depends on
+	/*this is generic void method, which write output to all output files depends on
 	the instance used to call this method.
 	@param NA
 	@return void
 	@see write content into the output file.
 	*/
 	@Override
-	public void writeToFile(String decorator) throws IOException {
+	public void writeToFile(PrefixSuffix prefix, PrefixSuffix suffix) throws IOException {
 		// TODO Auto-generated method stub
 		SingletonMyLogger.getInstance().writeMessage("writeToFile method called", DebugLevel.FILEWRITER);
 		BufferedWriter bw = new BufferedWriter(new FileWriter(new File(resultFile)));
+		//String final_output = null;
 		try
 		{
-			if(decorator != "")
+			if(prefix != PrefixSuffix.NONE)
 			{
-				bw.write(decorator+"_");
+				bw.write(prefix.toString());
 			}
-			for(int i=0; i<outputList.size(); i++)
+			for(int i=0; i< wordList.size(); i++)
 			{
-				bw.write(outputList.get(i).toString());
-				bw.write("\n");
+				bw.write(wordList.get(i));
+				if(!wordList.get(i).equals("\n"))
+				{
+					bw.write(" ");
+				}
+				else
+				{
+					bw.write("");
+				}
 			}
-			if(decorator != "")
+			if(suffix != PrefixSuffix.NONE)
 			{
-				bw.write("_"+decorator);
+				bw.write(suffix.toString());
 			}
 			bw.close();
 		}
@@ -290,5 +311,23 @@ public class InputDetails implements FileDisplayInterface {
 	*/
 	public void setOutputList(List<String> outputListIn) {
 			outputList = outputListIn;
+	}
+
+	/*getter method which returns private member wordList
+	@param NA
+	@return String List
+	@see print nothing but return wordList
+	*/
+	public List<String> getWordList() {
+		return wordList;
+	}
+
+	/*set value of private member wordList
+	@param wordList
+	@return NA
+	@see print nothing but set current wordList
+	*/
+	public void setWordList(List<String> wordListIn) {
+			wordList = wordListIn;
 	}
 }
